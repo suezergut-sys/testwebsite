@@ -1,0 +1,17 @@
+{
+  "name": "testwebsite",
+  "version": "1.0.0",
+  "description": "Hello World loading animation served with Node.js",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "hello-world",
+    "loader",
+    "nodejs"
+  ],
+  "author": "",
+  "license": "ISC"
+}
