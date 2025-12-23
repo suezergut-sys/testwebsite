@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Good bye, World!</title>
+  <style>
+    :root {
+      --bg1: #0b1020;
+      --bg2: #1b0f2e;
+      --bg3: #0f2a3a;
+      --card: rgba(255, 255, 255, 0.08);
+      --stroke: rgba(255, 255, 255, 0.12);
+      --text: rgba(255, 255, 255, 0.92);
+      --muted: rgba(255, 255, 255, 0.72);
+      --glow: rgba(137, 200, 255, 0.35);
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      overflow: hidden;
+      background: radial-gradient(1200px 700px at 10% 20%, rgba(128, 182, 255, 0.35), transparent 60%),
+                  radial-gradient(900px 600px at 85% 75%, rgba(255, 130, 205, 0.28), transparent 60%),
+                  linear-gradient(120deg, var(--bg1), var(--bg2), var(--bg3));
+      background-size: 120% 120%;
+      animation: bgShift 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes bgShift {
+      0% { background-position: 0% 0%, 0% 0%, 0% 0%; filter: saturate(1.05) contrast(1.02); }
+      100% { background-position: 100% 30%, 10% 100%, 100% 100%; filter: saturate(1.25) contrast(1.06); }
+    }
+
+    /* floating blobs */
+    .blob {
+      position: absolute;
+      width: 44vmax;
+      height: 44vmax;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: 0.35;
+      mix-blend-mode: screen;
+      pointer-events: none;
+      transform: translate3d(0,0,0);
+      animation: floaty 14s ease-in-out infinite;
+    }
+    .blob.b1 { left: -18vmax; top: -18vmax; background: radial-gradient(circle at 30% 30%, #7bd3ff, transparent 60%); }
+    .blob.b2 { right: -22vmax; top: 8vmax; background: radial-gradient(circle at 40% 40%, #ff7ad6, transparent 60%); animation-duration: 18s; }
+    .blob.b3 { left: 12vmax; bottom: -24vmax; background: radial-gradient(circle at 40% 40%, #7bffca, transparent 60%); animation-duration: 20s; }
+
+    @keyframes floaty {
+      0% { transform: translate3d(0,0,0) scale(1); }
+      50% { transform: translate3d(4vmax, -2vmax, 0) scale(1.05); }
+      100% { transform: translate3d(-2vmax, 3vmax, 0) scale(1.02); }
+    }
+
+    /* subtle starfield */
+    .stars {
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,.35), transparent 60%),
+        radial-gradient(1px 1px at 72% 28%, rgba(255,255,255,.28), transparent 60%),
+        radial-gradient(1px 1px at 35% 75%, rgba(255,255,255,.22), transparent 60%),
+        radial-gradient(1px 1px at 88% 62%, rgba(255,255,255,.25), transparent 60%),
+        radial-gradient(1px 1px at 55% 45%, rgba(255,255,255,.20), transparent 60%),
+        radial-gradient(1px 1px at 22% 58%, rgba(255,255,255,.18), transparent 60%);
+      opacity: 0.55;
+      filter: blur(0.2px);
+      animation: twinkle 6s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    @keyframes twinkle { from { opacity: 0.35; } to { opacity: 0.7; } }
+
+    .wrap {
+      position: relative;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+    }
+
+    .card {
+      width: min(820px, 92vw);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: clamp(18px, 4vw, 34px);
+      position: relative;
+      overflow: hidden;
+      transform: translateZ(0);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      background: conic-gradient(from 180deg,
+        rgba(123, 211, 255, 0.0),
+        rgba(123, 211, 255, 0.35),
+        rgba(255, 122, 214, 0.35),
+        rgba(123, 255, 202, 0.28),
+        rgba(123, 211, 255, 0.0)
+      );
+      filter: blur(16px);
+      opacity: 0.55;
+      animation: spin 10s linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .card > * { position: relative; z-index: 1; }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(34px, 5vw, 56px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      text-shadow: 0 10px 30px rgba(0,0,0,.35);
+      animation: popIn 900ms cubic-bezier(.2,.8,.2,1) both;
+    }
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(10px) scale(.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .sub {
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: clamp(14px, 2.2vw, 16px);
+      max-width: 62ch;
+      animation: fadeUp 1100ms 120ms cubic-bezier(.2,.8,.2,1) both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .counter {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+      animation: fadeUp 1200ms 220ms cubic-bezier(.2,.8,.2,1) both;
+    }
+
+    .chiprow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .chip {
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(0,0,0,0.22);
+      border: 1px solid rgba(255,255,255,0.10);
+      box-shadow: 0 12px 30px rgba(0,0,0,.22);
+      display: inline-flex;
+      gap: 10px;
+      align-items: baseline;
+    }
+
+    .label {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.7);
+    }
+
+    .value {
+      font-variant-numeric: tabular-nums;
+      font-size: clamp(24px, 4vw, 40px);
+      letter-spacing: 0.02em;
+      text-shadow: 0 12px 40px rgba(0,0,0,.25);
+    }
+
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    .pulse {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: rgba(123, 255, 202, 0.9);
+      box-shadow: 0 0 0 0 rgba(123, 255, 202, 0.35);
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(123, 255, 202, 0.40); }
+      70% { transform: scale(1.1); box-shadow: 0 0 0 16px rgba(123, 255, 202, 0.0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(123, 255, 202, 0.0); }
+    }
+
+    .foot {
+      margin-top: 14px;
+      color: rgba(255,255,255,.62);
+      font-size: 13px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* hover tilt */
+    .tilt {
+      transform-style: preserve-3d;
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body, .blob, .stars, .card::before, .pulse, h1, .sub, .counter { animation: none !important; }
+      .tilt { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="stars"></div>
+
+  <main class="wrap">
+    <section class="card tilt" id="card" aria-live="polite">
+      <h1>Good bye, World!</h1>
+      <p class="sub">
+        Time remaining until <span class="mono" id="targetLabel">September 1, 2028</span>:
+      </p>
+
+      <div class="counter">
+        <div class="chiprow">
+          <div class="chip">
+            <span class="label">Countdown</span>
+            <span class="pulse" aria-hidden="true"></span>
+          </div>
+          <div class="chip">
+            <span class="label">Format</span>
+            <span class="mono">days:hours:seconds</span>
+          </div>
+        </div>
+
+        <div class="chip">
+          <span class="value mono" id="countdown">--:--:--</span>
+        </div>
+
+        <div class="foot mono" id="extra">
+          <span id="tz">Timezone: —</span>
+          <span>•</span>
+          <span id="now">Now: —</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Target: September 1, 2028 at 00:00:00 local time.
+    // If you want a fixed timezone target (e.g., UTC), change to Date.UTC and compute accordingly.
+    const target = new Date(2028, 8, 1, 0, 0, 0); // month is 0-based: 8 = September
+
+    const elCountdown = document.getElementById('countdown');
+    const elNow = document.getElementById('now');
+    const elTz = document.getElementById('tz');
+
+    function pad2(n) { return String(n).padStart(2, '0'); }
+
+    function update() {
+      const now = new Date();
+      let diffMs = target - now;
+
+      // Show local timezone label
+      try {
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        elTz.textContent = "Timezone: " + tz;
+      } catch {
+        elTz.textContent = "Timezone: (unknown)";
+      }
+
+      // Live "now" readout (nice for "actual time all the time")
+      elNow.textContent = "Now: " + now.toLocaleString();
+
+      if (diffMs <= 0) {
+        elCountdown.textContent = "0:00:00";
+        return;
+      }
+
+      const totalSeconds = Math.floor(diffMs / 1000);
+
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const seconds = totalSeconds % 60;
+
+      elCountdown.textContent = `${days}:${pad2(hours)}:${pad2(seconds)}`;
+    }
+
+    // Ensure it ticks accurately: update immediately, then align to the next second boundary.
+    update();
+    (function startAlignedTicker() {
+      const now = Date.now();
+      const msToNextSecond = 1000 - (now % 1000);
+      setTimeout(() => {
+        update();
+        setInterval(update, 1000);
+      }, msToNextSecond);
+    })();
+
+    // Hover tilt animation (pure JS, no libs)
+    const card = document.getElementById('card');
+    const maxTilt = 8; // degrees
+
+    function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+
+    card.addEventListener('mousemove', (e) => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width;
+      const y = (e.clientY - r.top) / r.height;
+
+      const tiltX = clamp((0.5 - y) * (maxTilt * 2), -maxTilt, maxTilt);
+      const tiltY = clamp((x - 0.5) * (maxTilt * 2), -maxTilt, maxTilt);
+
+      card.style.transform = `perspective(900px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-2px)`;
+      card.style.boxShadow = `0 30px 90px rgba(0,0,0,.55), 0 0 90px rgba(137,200,255,.18)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+      card.style.boxShadow = '';
+    });
+  </script>
+</body>
+</html>
