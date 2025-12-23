@@ -4,6 +4,7 @@ const hoursEl = document.getElementById('hours');
 const secondsEl = document.getElementById('seconds');
 
 const pad = (value, size = 2) => String(value).padStart(size, '0');
+let countdownTimer;
 
 function updateCountdown() {
   const diff = targetDate.getTime() - Date.now();
@@ -11,19 +12,23 @@ function updateCountdown() {
   if (diff <= 0) {
     daysEl.textContent = '0';
     hoursEl.textContent = '00';
-    secondsEl.textContent = '0000';
+    secondsEl.textContent = '00';
+
+    if (countdownTimer) {
+      clearInterval(countdownTimer);
+    }
     return;
   }
 
   const totalSeconds = Math.floor(diff / 1000);
   const days = Math.floor(totalSeconds / 86400);
   const hours = Math.floor((totalSeconds % 86400) / 3600);
-  const seconds = totalSeconds % 3600; // seconds remaining after days and hours
+  const seconds = totalSeconds % 60;
 
   daysEl.textContent = days.toLocaleString();
   hoursEl.textContent = pad(hours);
-  secondsEl.textContent = pad(seconds, 4);
+  secondsEl.textContent = pad(seconds);
 }
 
+countdownTimer = setInterval(updateCountdown, 1000);
 updateCountdown();
-setInterval(updateCountdown, 1000);
