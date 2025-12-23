@@ -1,17 +1,14 @@
 {
   "name": "testwebsite",
   "version": "1.0.0",
-  "description": "Hello World loading animation served with Node.js",
-  "type": "module",
+  "description": "Simple goodbye page with countdown to September 1, 2028.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
-  "keywords": [
-    "hello-world",
-    "loader",
-    "nodejs"
-  ],
   "author": "",
-  "license": "ISC"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
 }
